@@ -3,6 +3,8 @@
     "client:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
     "client:start": "cd client && next start",
-    "client:lint": "cd client && next lint"
+    "client:lint": "cd client && next lint",
+    "program:build": "cargo build-bpf --manifest-path=programs/Cargo.toml --bpf-out-dir=programs/dist/program",
+    "program:test": "cargo test-bpf --manifest-path=programs/Cargo.toml --bpf-out-dir=programs/dist/program"
   }
 }
