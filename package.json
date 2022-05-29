@@ -5,6 +5,7 @@
     "client:start": "cd client && next start",
     "client:lint": "cd client && next lint",
     "program:build": "cargo build-bpf --manifest-path=programs/Cargo.toml --bpf-out-dir=programs/dist/program",
-    "program:test": "cargo test-bpf --manifest-path=programs/Cargo.toml --bpf-out-dir=programs/dist/program"
+    "program:test": "cargo test-bpf --manifest-path=programs/Cargo.toml --bpf-out-dir=programs/dist/program",
+    "program:deploy": "solana program deploy programs/dist/program/program.so"
   }
 }
