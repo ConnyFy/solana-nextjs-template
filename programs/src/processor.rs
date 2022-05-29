@@ -1,5 +1,7 @@
 use crate::error::CustomError::InvalidInstruction;
+use crate::state::AccountData;
 use crate::{instruction::Instruction, state::State};
+use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -19,7 +21,7 @@ impl Processor {
         match instruction {
             Instruction::InitInstruction => {
                 msg!("Instruction: InitInstruction");
-                Self::process_init_instruction(accounts, program_id)
+                Self::process_init_instruction()
             }
             Instruction::StateInstruction { ref state } => {
                 msg!("Instruction: StateInstruction");
@@ -27,17 +29,7 @@ impl Processor {
             }
         }
     }
-    fn process_init_instruction(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
-        let account_info_iter = &mut accounts.iter();
-        let account = next_account_info(account_info_iter)?;
-        if !account.is_writable {
-            return Err(InvalidInstruction.into());
-        }
-
-        if account.owner != program_id {
-            return Err(ProgramError::IncorrectProgramId);
-        }
-
+    fn process_init_instruction() -> ProgramResult {
         Ok(())
     }
     fn process_state_instruction(
@@ -48,16 +40,24 @@ impl Processor {
         let account_info_iter = &mut accounts.iter();
         let account = next_account_info(account_info_iter)?;
         if !account.is_writable {
-            return Err(InvalidInstruction.into());
+            return Err(ProgramError::IllegalOwner);
         }
 
         if account.owner != program_id {
             return Err(ProgramError::IncorrectProgramId);
         }
 
-        if state.field != "" {
-            return Err(ProgramError::InvalidAccountData);
+        let mut accound_data = AccountData::try_from_slice(&account.data.borrow())?;
+
+        if state.field == "inc" {
+            accound_data.field += 1;
+        } else if state.field == "dec" {
+            accound_data.field -= 1;
+        } else {
+            return Err(InvalidInstruction.into());
         }
+
+        accound_data.serialize(&mut &mut account.data.borrow_mut()[..])?;
 
         Ok(())
     }
