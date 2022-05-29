@@ -10,11 +10,14 @@ export type AccountDataProperties = {
 };
 
 export class AccountDataObject {
+  field = 0;
   constructor(properties: AccountDataProperties | undefined = undefined) {
     if (properties) {
-      Object.keys(properties).forEach((key) => {
-        this[key] = properties[key];
-      });
+      (Object.keys(properties) as (keyof AccountDataProperties)[]).forEach(
+        (key) => {
+          this[key] = properties[key];
+        }
+      );
     }
   }
 }

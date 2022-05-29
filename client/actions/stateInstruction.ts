@@ -71,8 +71,9 @@ export const sendStateInstruction = async (
   let dataSerialized = serialize(StateSchema, data);
   let dataToSend = Uint8Array.from([
     InstructionTags.StateInstruction,
-    ...dataSerialized,
+    ...Array.from(dataSerialized),
   ]);
+
   const instruction = new TransactionInstruction({
     keys: [{ pubkey: publicKey, isSigner: false, isWritable: true }],
     programId: programID,

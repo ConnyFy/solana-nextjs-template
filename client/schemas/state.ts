@@ -8,9 +8,10 @@ export type StateProperties = {
 };
 
 export class StateObject {
+  field = "";
   constructor(properties: StateProperties | undefined = undefined) {
     if (properties) {
-      Object.keys(properties).forEach((key) => {
+      (Object.keys(properties) as (keyof StateProperties)[]).forEach((key) => {
         this[key] = properties[key];
       });
     }
