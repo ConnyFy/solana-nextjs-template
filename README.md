@@ -1,5 +1,10 @@
-# Solana application
-This is a starting template for Solana project with Next JS frontend.
+<p align="center">
+  <img src="/client/public/solana-sol-logo.svg" alt="SOL logo" width="150"/>
+  <img src="/client/public/next-js-logo.svg" alt="NextJS logo" width="150"/>
+</p>
+
+<h1 align="center">Solana + NextJS</h1>
+A template for Solana projects with Next JS frontend.
 
 ## Program
 The source code of the Solana application found in the programs folder.
